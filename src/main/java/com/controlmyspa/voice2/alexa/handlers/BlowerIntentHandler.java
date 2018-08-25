@@ -12,17 +12,16 @@ import com.amazon.speech.ui.Card;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.controlmyspa.voice2.alexa.utils.AlexaUtils;
 
-
 @Component
-public class LightIntentHandler  implements IntentHandler {
+public class BlowerIntentHandler implements IntentHandler {
 
-	protected Logger logger = LoggerFactory.getLogger(LightIntentHandler.class);
+	protected Logger logger = LoggerFactory.getLogger(BlowerIntentHandler.class);
 	
 	@Override
 	public SpeechletResponse handleIntent(Intent intent, IntentRequest request, Session session) {
 		String slotValue = intent.getSlot("status").getValue();
-		Card card = AlexaUtils.newCard("ControlMySpa", "lights are "+ slotValue);
-		PlainTextOutputSpeech speech = AlexaUtils.newSpeech("lights are " + slotValue, AlexaUtils.inConversationMode(session));
+		Card card = AlexaUtils.newCard("ControlMySpa", "blower is " + slotValue);
+		PlainTextOutputSpeech speech = AlexaUtils.newSpeech("blower is " + slotValue, AlexaUtils.inConversationMode(session));
 
 		return AlexaUtils.newSpeechletResponse( card, speech, session, false);
 	}
