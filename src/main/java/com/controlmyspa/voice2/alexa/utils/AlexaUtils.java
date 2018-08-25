@@ -12,6 +12,10 @@ import com.amazon.speech.ui.StandardCard;
 public final class AlexaUtils {
 	protected static final String SESSION_CONVERSATION_FLAG = "conversation";
 	
+	public static final String NonUserLinkHelpText = "Welcome to Control My Spa. To use this skill, you must have a Control My Spa account." 
+				 											+ "I've sent some information to the Alexa app. Open your Alexa "
+				 												+ "app and click on the link to connect your Control My Spa account with Alexa.";
+	
 	public static final String SamplesHelpText = "\"Welcome to control my spa: Here are some things you can say: Turn lights on or turn lights off, Turn blower on or off";
 	public static final String RepromptText = "What else can I tell you?  Say \"Help\" for some suggestions.";
 	

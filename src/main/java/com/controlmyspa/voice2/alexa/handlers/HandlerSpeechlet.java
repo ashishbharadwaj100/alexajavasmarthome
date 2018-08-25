@@ -17,6 +17,7 @@ import com.amazon.speech.speechlet.SessionStartedRequest;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.speechlet.SpeechletV2;
 import com.amazon.speech.ui.Card;
+import com.amazon.speech.ui.LinkAccountCard;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.controlmyspa.voice2.alexa.utils.AlexaUtils;
 
@@ -58,17 +59,29 @@ public class HandlerSpeechlet implements SpeechletV2 {
 		logger.info("UserId={}", requestEnvelope.getSession().getUser().getUserId());
 		logger.info("Permissions={}", requestEnvelope.getSession().getUser().getPermissions());
 
-		// Set a session variable so that we know we're in conversation mode.
+		String accessToken = requestEnvelope.getSession().getUser().getAccessToken();
 		Session session = requestEnvelope.getSession();
-		AlexaUtils.setConversationMode(session, true);
+		
+		if(accessToken != null) {
+			// Set a session variable so that we know we're in conversation mode.
+			AlexaUtils.setConversationMode(session, true);
 
-		// Create the initial greeting speech.
-		String speechText = "Hello. " + AlexaUtils.SamplesHelpText;
+			// Create the initial greeting speech.
+			String speechText = "Hello. " + AlexaUtils.SamplesHelpText;
+			
+			Card card = AlexaUtils.newCard("Welcome!", speechText);
+			//LinkAccountCard linkAccountCard = new LinkAccountCard();
+			PlainTextOutputSpeech speech = AlexaUtils.newSpeech(speechText, false);
+			
+			return AlexaUtils.newSpeechletResponse(card, speech, session, false);
+		}
+		else {
+				LinkAccountCard card = new LinkAccountCard(); card.setTitle("Link your account");
+				String speechText = "Hello. " + AlexaUtils.NonUserLinkHelpText;
+				PlainTextOutputSpeech speech = AlexaUtils.newSpeech(speechText, false);
+				return AlexaUtils.newSpeechletResponse(card, speech, session, false);
+		}
 		
-		Card card = AlexaUtils.newCard("Welcome!", speechText);
-		PlainTextOutputSpeech speech = AlexaUtils.newSpeech(speechText, false);
-		
-		return AlexaUtils.newSpeechletResponse(card, speech, session, false);
 	}
 
 	@Override	
