@@ -1,5 +1,8 @@
 package com.controlmyspa.voice2.services;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +21,10 @@ public class GluuApiServices {
 				.toString();
 		
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<IamUser> response = restTemplate.getForEntity(url, IamUser.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + access_token);
+		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+		ResponseEntity<IamUser> response = restTemplate.exchange(url, HttpMethod.GET, entity, IamUser.class);
 		return response.getBody();
 	}
 }
