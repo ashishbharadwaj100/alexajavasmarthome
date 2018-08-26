@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -53,6 +54,7 @@ public class ControlMySpaApiServices {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + access_token);
+			headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
 			
 			ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.POST, entity, Object.class);
