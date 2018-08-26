@@ -48,8 +48,10 @@ public class ControlMySpaApiServices {
 					.append("State")
 					.toString();
 			logger.info("ControlStateUrl={}", url);
+			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String requestJson = objectMapper.writeValueAsString(payload);
+			logger.info("payload={}", requestJson);
 			
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
