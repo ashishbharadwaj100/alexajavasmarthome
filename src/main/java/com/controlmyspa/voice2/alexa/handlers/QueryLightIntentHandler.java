@@ -41,7 +41,7 @@ public class QueryLightIntentHandler implements IntentHandler {
 		}
 		
 		if(status.length() > 0) {
-			Card card = AlexaUtils.newCard("ControlMySpa", "lights Status "+ status);
+			Card card = AlexaUtils.newCard("ControlMySpa", "lights are "+ status);
 			PlainTextOutputSpeech speech = AlexaUtils.newSpeech("lights are " + status, AlexaUtils.inConversationMode(session));
 			return AlexaUtils.newSpeechletResponse( card, speech, session, false);
 		} else {

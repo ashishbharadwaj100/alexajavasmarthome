@@ -19,9 +19,9 @@ public class HeaterIntentHandler implements IntentHandler {
 	
 	@Override
 	public SpeechletResponse handleIntent(Intent intent, IntentRequest request, Session session) {
-		String slotValue = intent.getSlot("status").getValue();
-		Card card = AlexaUtils.newCard("ControlMySpa", "Heaters are "+ slotValue);
-		PlainTextOutputSpeech speech = AlexaUtils.newSpeech("Heaters are " + slotValue, AlexaUtils.inConversationMode(session));
+		//String slotValue = intent.getSlot("status").getValue();
+		Card card = AlexaUtils.newCard("ControlMySpa", "This functionality is not present right now");
+		PlainTextOutputSpeech speech = AlexaUtils.newSpeech("Sorry!, This functionality is not present right now", AlexaUtils.inConversationMode(session));
 
 		return AlexaUtils.newSpeechletResponse( card, speech, session, false);
 	}
