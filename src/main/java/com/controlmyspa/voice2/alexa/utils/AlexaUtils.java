@@ -43,8 +43,8 @@ public final class AlexaUtils {
 	public static PlainTextOutputSpeech newSpeech( String speechText, boolean appendRepromptText ) {
 		
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText( appendRepromptText ? speechText + "\n\n" + AlexaUtils.RepromptText : speechText);
-
+		//speech.setText( appendRepromptText ? speechText + "\n\n" + AlexaUtils.RepromptText : speechText);
+		speech.setText(speechText);
 		return speech;
 	}
 	
