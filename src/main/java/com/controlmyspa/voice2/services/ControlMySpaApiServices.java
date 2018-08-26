@@ -17,7 +17,7 @@ public class ControlMySpaApiServices {
 		
 		String url = new StringBuilder()
 				.append(Constants.BASE_URL)
-				.append("/spas/search/findByUsername")
+				.append("/mobile/spas/search/findByUsername")
 				.toString();
 		
 		RestTemplate restTemplate = new RestTemplate();
