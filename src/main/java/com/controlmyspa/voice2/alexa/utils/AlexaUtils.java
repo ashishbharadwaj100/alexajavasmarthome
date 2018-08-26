@@ -16,7 +16,7 @@ public final class AlexaUtils {
 				 											+ " I have sent some information to the Alexa app. Open your Alexa "
 				 												+ "app and click on the link to connect your Control My Spa account with Alexa.";
 	
-	public static final String SamplesHelpText = "\"Welcome to control my spa: Here are some things you can say: Turn lights on or turn lights off, Turn blower on or off";
+	public static final String SamplesHelpText = "\"Welcome to control my spa: Here are some things you can say: Turn lights on or off, what is the set temperature, what is the actual temperature, what is the heater status.";
 	public static final String RepromptText = "What else can I tell you?  Say \"Help\" for some suggestions.";
 	
 	private AlexaUtils() {
