@@ -83,6 +83,7 @@ public class HandlerSpeechlet implements SpeechletV2 {
 			Spa spa = controlMySpaApiServices.getSpaInfo(user.getUser_name(), accessToken);
 			logger.info("spa={}", spa);
 			session.setAttribute("spaid", spa.get_id());
+			session.setAttribute("user", user.getUser_name());
 			
 			//print the session attributes
 			logger.info("sessionid={}", session.getSessionId());

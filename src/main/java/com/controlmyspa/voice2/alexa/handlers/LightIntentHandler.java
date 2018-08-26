@@ -31,7 +31,7 @@ public class LightIntentHandler  implements IntentHandler {
 		
 		String slotValue = intent.getSlot("status").getValue();
 		
-		String desiredState = slotValue.equalsIgnoreCase("on") ? "HIGH" : "LOW";
+		String desiredState = slotValue.equalsIgnoreCase("on") ? "HIGH" : "OFF";
 		
 		RequestPayload payload = new RequestPayload();
 		payload.setDesiredState(desiredState);
