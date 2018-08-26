@@ -20,6 +20,8 @@ public class LightIntentHandler  implements IntentHandler {
 	
 	@Override
 	public SpeechletResponse handleIntent(Intent intent, IntentRequest request, Session session) {
+		logger.info("sessionid={}", session.getSessionId());
+		logger.info("session attributes={}", session.getAttributes());
 		String slotValue = intent.getSlot("status").getValue();
 		Card card = AlexaUtils.newCard("ControlMySpa", "lights are "+ slotValue);
 		PlainTextOutputSpeech speech = AlexaUtils.newSpeech("lights are " + slotValue, AlexaUtils.inConversationMode(session));

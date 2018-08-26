@@ -21,6 +21,8 @@ import com.amazon.speech.ui.LinkAccountCard;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.controlmyspa.voice2.alexa.utils.AlexaUtils;
 import com.controlmyspa.voice2.model.IamUser;
+import com.controlmyspa.voice2.model.Spa;
+import com.controlmyspa.voice2.services.ControlMySpaApiServices;
 import com.controlmyspa.voice2.services.GluuApiServices;
 
 
@@ -33,6 +35,9 @@ public class HandlerSpeechlet implements SpeechletV2 {
 	
 	@Autowired
 	private GluuApiServices gluuApiServices;
+	
+	@Autowired
+	ControlMySpaApiServices controlMySpaApiServices;
 	
 	public HandlerSpeechlet() {
 	}
@@ -70,8 +75,18 @@ public class HandlerSpeechlet implements SpeechletV2 {
 			//validate token with Gluu
 			IamUser user = gluuApiServices.validateAccessToken(accessToken);
 			logger.info("user={}", user);
+			
 			// Set a session variable so that we know we're in conversation mode.
 			AlexaUtils.setConversationMode(session, true);
+			
+			//query to find the spa associated with the user
+			Spa spa = controlMySpaApiServices.getSpaInfo(user.getUser_name(), accessToken);
+			logger.info("spa={}", spa);
+			session.setAttribute("spaid", spa.get_id());
+			
+			//print the session attributes
+			logger.info("sessionid={}", session.getSessionId());
+			logger.info("session attributes={}", session.getAttributes());
 			
 			// Create the initial greeting speech.
 			String speechText = "Hello " + user.getGiven_name() +". " + AlexaUtils.SamplesHelpText;
