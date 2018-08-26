@@ -38,7 +38,7 @@ public class LightIntentHandler  implements IntentHandler {
 		payload.setDeviceNumber("0");
 		payload.setOriginatorId(session.getUser().getAccessToken());
 		
-		int responseCode = controlMySpaApiServices.requestSetControlState(session.getAttribute("spaId").toString(), 
+		int responseCode = controlMySpaApiServices.requestSetControlState(session.getAttribute("spaid").toString(), 
 												session.getUser().getAccessToken(), "Light", payload);
 		
 		if(responseCode == 202) {
