@@ -3,6 +3,7 @@ package com.controlmyspa.voice2.alexa.handlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.IntentRequest;
@@ -15,6 +16,7 @@ import com.controlmyspa.voice2.model.ComponentState;
 import com.controlmyspa.voice2.model.Spa;
 import com.controlmyspa.voice2.services.ControlMySpaApiServices;
 
+@Component
 public class QueryLightIntentHandler implements IntentHandler {
 
 	protected Logger logger = LoggerFactory.getLogger(QueryLightIntentHandler.class);
