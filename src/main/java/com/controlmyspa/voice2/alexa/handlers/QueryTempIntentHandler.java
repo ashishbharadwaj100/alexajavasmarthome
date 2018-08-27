@@ -36,7 +36,7 @@ protected Logger logger = LoggerFactory.getLogger(QueryTempIntentHandler.class);
 		if(spa != null) {
 			scale = spa.getCurrentState().isCelsius() ? "celsius" : "fahrenheit";
 			
-			String temp = spa.getCurrentState().getDesiredTemp();
+			String temp = spa.getCurrentState().getCurrentTemp();
 			
 			if(scale.equals("celsius")) {
 				int tempFa = Integer.valueOf(temp);
