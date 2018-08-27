@@ -35,9 +35,16 @@ protected Logger logger = LoggerFactory.getLogger(QuerySetTempIntentHandler.clas
 		
 		if(spa != null) {
 			scale = spa.getCurrentState().isCelsius() ? "celsius" : "fahrenheit";
+			String temp = spa.getCurrentState().getDesiredTemp();
 			
-			Card card = AlexaUtils.newCard("ControlMySpa", "Set Temperature is " + spa.getCurrentState().getDesiredTemp()+ " " + scale);
-			PlainTextOutputSpeech speech = AlexaUtils.newSpeech("Set Temperature is " + spa.getCurrentState().getDesiredTemp() + " " + scale, AlexaUtils.inConversationMode(session));
+			if(scale.equals("celsius")) {
+				int tempFa = Integer.valueOf(temp);
+				int celsius = (int) Math.round((tempFa-32)*(0.5556));
+				temp = String.valueOf(celsius);
+			}
+			
+			Card card = AlexaUtils.newCard("ControlMySpa", "Set Temperature is " + temp + " " + scale);
+			PlainTextOutputSpeech speech = AlexaUtils.newSpeech("Set Temperature is " + temp + " " + scale, AlexaUtils.inConversationMode(session));
 			return AlexaUtils.newSpeechletResponse( card, speech, session, false);
 		}
 		else {
