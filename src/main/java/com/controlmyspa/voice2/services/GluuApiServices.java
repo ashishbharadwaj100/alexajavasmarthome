@@ -17,7 +17,7 @@ public class GluuApiServices {
 		
 		String url = new StringBuilder()
 				.append(Constants.IAM_BASE_URL)
-				.append("/oxauth/seam/resource/restv1/oxauth/userinfo")
+				.append("/oxauth/restv1/userinfo")
 				.toString();
 		
 		RestTemplate restTemplate = new RestTemplate();

@@ -71,4 +71,15 @@ public class ControlMySpaApiServices {
 		return 0;
 	}
 	
+	public void requestSetTemp(String spaId, String access_token) {
+		
+		String url = new StringBuilder()
+				.append(Constants.BASE_URL)
+				.append("/control/")
+				.append(spaId)
+				.append("/setDesiredTemp")
+				.toString();
+		
+		logger.info("SetDesiredTempUrl={}", url);
+	}
 }
