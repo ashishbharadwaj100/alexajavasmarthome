@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.controlmyspa.voice2.model.RequestPayload;
+import com.controlmyspa.voice2.model.RequestSetTempPayload;
 import com.controlmyspa.voice2.model.Spa;
 import com.controlmyspa.voice2.utils.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -71,15 +72,36 @@ public class ControlMySpaApiServices {
 		return 0;
 	}
 	
-	public void requestSetTemp(String spaId, String access_token) {
+	public int requestSetTemp(String spaId, String access_token, RequestSetTempPayload payload) {
+		try {
+			String url = new StringBuilder()
+					.append(Constants.BASE_URL)
+					.append("/control/")
+					.append(spaId)
+					.append("/setDesiredTemp")
+					.toString();
+			
+			logger.info("SetDesiredTempUrl={}", url);
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			String requestJson = objectMapper.writeValueAsString(payload);
+			logger.info("payload={}", requestJson);
+			
+			RestTemplate restTemplate = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + access_token);
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+			
+			ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.POST, entity, Object.class);
+			logger.info("response={}, statusCode={}", response.getBody(), response.getStatusCodeValue());
+			return response.getStatusCodeValue();
+		}
+		catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		
-		String url = new StringBuilder()
-				.append(Constants.BASE_URL)
-				.append("/control/")
-				.append(spaId)
-				.append("/setDesiredTemp")
-				.toString();
-		
-		logger.info("SetDesiredTempUrl={}", url);
+		return 0;
 	}
 }

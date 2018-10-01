@@ -93,7 +93,6 @@ public class HandlerSpeechlet implements SpeechletV2 {
 			String speechText = "Hello " + user.getGiven_name() +". " + AlexaUtils.SamplesHelpText;
 			
 			Card card = AlexaUtils.newCard("Welcome!", speechText);
-			//LinkAccountCard linkAccountCard = new LinkAccountCard();
 			PlainTextOutputSpeech speech = AlexaUtils.newSpeech(speechText, false);
 			
 			return AlexaUtils.newSpeechletResponse(card, speech, session, false);
@@ -136,7 +135,7 @@ public class HandlerSpeechlet implements SpeechletV2 {
 			// Derive the handler's bean name
 			String intentName = intent.getName();
 			String handlerBeanName = intentName + "Handler";
-			
+			logger.info("intentName={}", intentName);
 			// If this is an Amazon Intent, change the handler name to better
 			// match up to a Spring bean name.  For example, the intent AMAZON.HelpIntent should
 			// be changed to AmazonHelpIntent.
