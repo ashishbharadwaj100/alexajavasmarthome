@@ -33,17 +33,60 @@ public class SetTemperatureIntentHandler implements IntentHandler {
 		String accessToken = session.getUser().getAccessToken();
 		logger.info("access-token={}", accessToken);
 		String tempSlotValue = intent.getSlot("temperatureValue").getValue();
-		String scaleSlotValue = intent.getSlot("degree").getValue();
-		logger.info("tempSlotValue={}, scaleSlotValue={}", tempSlotValue, scaleSlotValue);
+		//String scaleSlotValue = intent.getSlot("degree").getValue();
+		logger.info("tempSlotValue={}", tempSlotValue);
 		
-		if(tempSlotValue !=null && scaleSlotValue != null) {
+		if(tempSlotValue !=null) {
+			float tempValue = Float.parseFloat(tempSlotValue);
+			int tempValueRounded = Math.round(tempValue);
+			Spa spa = getSpa(session);
+			if(spa != null) {
+				if(spa.getCurrentState().isCelsius()) {
+					if(tempValueRounded < 10) {
+						return sendMessage(Constants.TEMP_LOW_CELSIUS, session);
+					} else if (tempValueRounded > 40) {
+						return sendMessage(Constants.TEMP_HIGH_CELSIUS, session);
+					} 
+				} 
+				
+				else {
+					if(tempValueRounded < 50) {
+						return sendMessage(Constants.TEMP_LOW_FAHRENHEIT, session);
+					} else if (tempValueRounded > 104) {
+						return sendMessage(Constants.TEMP_HIGH_FAHRENHEIT, session);
+					}
+				}
+				
+				RequestSetTempPayload payload = new RequestSetTempPayload();
+						payload.setDesiredTemp(String.valueOf(tempValueRounded));
+						
+				int responseCode = controlMySpaApiServices.requestSetTemp(spa.get_id(), accessToken, payload);
+				if(responseCode == 202) {
+					String scale = "";
+					scale = spa.getCurrentState().isCelsius() ? "celsius" : "fahrenheit";
+					String responseMessage = "Your Spa desired water temperature is now " + tempValueRounded + " degrees " + scale;
+					return sendMessage(responseMessage, session);
+				} else {
+					return sendMessage(Constants.REQUEST_FAILED, session);
+				}
+				
+			} else {
+				return sendMessage(Constants.REQUEST_FAILED, session);
+			}
+			
+		} else {
+			return sendMessage(Constants.REQUEST_FAILED_TEMP_VALUE_INVALID, session);
+		}
+		
+		
+		/*if(tempSlotValue !=null && scaleSlotValue != null) {
 			float tempValue = Float.parseFloat(tempSlotValue);
 			int tempValueRounded = Math.round(tempValue);
 			if(scaleSlotValue.equalsIgnoreCase("celsius")) {
 				if(tempValueRounded < 10) {
-					return sendError(Constants.TEMP_LOW_CELSIUS, session);
+					return sendMessage(Constants.TEMP_LOW_CELSIUS, session);
 				} else if (tempValueRounded > 40) {
-					return sendError(Constants.TEMP_HIGH_CELSIUS, session);
+					return sendMessage(Constants.TEMP_HIGH_CELSIUS, session);
 				} else {
 					Spa spa = getSpa(session);
 					if(spa != null) {
@@ -55,27 +98,84 @@ public class SetTemperatureIntentHandler implements IntentHandler {
 							payload.setDesiredTemp(String.valueOf(tempInFloat));
 						}
 					  controlMySpaApiServices.requestSetTemp(spa.get_id(), accessToken, payload);
+					} else {
+						sendMessage(Constants.REQUEST_FAILED, session);
 					}
 				}
 			} 
 			else {
 				if(tempValueRounded < 50) {
-					return sendError(Constants.TEMP_LOW_FAHRENHEIT, session);
+					return sendMessage(Constants.TEMP_LOW_FAHRENHEIT, session);
 				} else if (tempValueRounded > 104) {
-					return sendError(Constants.TEMP_HIGH_FAHRENHEIT, session);
+					return sendMessage(Constants.TEMP_HIGH_FAHRENHEIT, session);
 				} else {
 					Spa spa = getSpa(session);
+					if(spa != null) {
+						RequestSetTempPayload payload = new RequestSetTempPayload();
+						if(spa.getCurrentState().isCelsius()) {
+							int tempInFloat =  Math.round(convertFahrenheitToCelsius(tempValue));
+								payload.setDesiredTemp(String.valueOf(tempInFloat));
+						} else {
+							payload.setDesiredTemp(String.valueOf(tempValueRounded));
+						}
+					  controlMySpaApiServices.requestSetTemp(spa.get_id(), accessToken, payload);
+					} else {
+						sendMessage(Constants.REQUEST_FAILED, session);
+					}
+					
 				}
 			}
-		}
+		} else if (tempSlotValue !=null && scaleSlotValue == null) {
+			float tempValue = Float.parseFloat(tempSlotValue);
+			int tempValueRounded = Math.round(tempValue);
+			Spa spa = getSpa(session);
+			if(spa != null) {
+				if(spa.getCurrentState().isCelsius()) {
+					if(tempValueRounded < 10) {
+						return sendMessage(Constants.TEMP_LOW_CELSIUS, session);
+					} else if (tempValueRounded > 50) {
+						return sendMessage(Constants.TEMP_HIGH_CELSIUS, session);
+					} 
+				} 
+				
+				else {
+					if(tempValueRounded < 50) {
+						return sendMessage(Constants.TEMP_LOW_FAHRENHEIT, session);
+					} else if (tempValueRounded > 104) {
+						return sendMessage(Constants.TEMP_HIGH_FAHRENHEIT, session);
+					}
+				}
+				
+				RequestSetTempPayload payload = new RequestSetTempPayload();
+						payload.setDesiredTemp(String.valueOf(tempValueRounded));
+						
+				int responseCode = controlMySpaApiServices.requestSetTemp(spa.get_id(), accessToken, payload);
+				if(responseCode == 202) {
+					String scale = "";
+					scale = spa.getCurrentState().isCelsius() ? "celsius" : "fahrenheit";
+					String responseMessage = "Your Spa desired water temperature is now " + tempValueRounded + " degrees " + scale;
+					return sendMessage(responseMessage, session);
+				} else {
+					sendMessage(Constants.REQUEST_FAILED, session);
+				}
+				
+			} else {
+				sendMessage(Constants.REQUEST_FAILED, session);
+			}
+			
+		}*/
 		
-		return null;
 	}
 	
 	private float convertCelsiusToFahrenheit(float cel) {
 		/* Convert Celsius to Fahrenheit */
         float fahren =  cel * (9f / 5) + 32;
         return fahren;
+	}
+	
+	private float convertFahrenheitToCelsius(float fahr) {
+		float cel = ((fahr - 32)*5)/9;
+		return cel;
 	}
 	
 	private Spa getSpa(Session session) {
@@ -85,7 +185,7 @@ public class SetTemperatureIntentHandler implements IntentHandler {
 		return spa;
 	}
 	
-	private SpeechletResponse sendError(String message, Session session) {
+	private SpeechletResponse sendMessage(String message, Session session) {
 		Card card = AlexaUtils.newCard("ControlMySpa", message);
 		PlainTextOutputSpeech speech = AlexaUtils.newSpeech(message, AlexaUtils.inConversationMode(session));
 		return AlexaUtils.newSpeechletResponse( card, speech, session, false);

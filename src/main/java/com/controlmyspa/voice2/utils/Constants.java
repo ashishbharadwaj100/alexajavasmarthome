@@ -15,4 +15,7 @@ public class Constants {
 			+ "please set the temperature between 50 to 104 degree fahrenheit.";
 	public static final String TEMP_HIGH_FAHRENHEIT = "temperature is too high. "
 			+ "please set the temperature between 50 to 104 degree fahrenheit.";
+	
+	public static final String REQUEST_FAILED = "sorry, i could not fullfill the request due to some internal errors.";
+	public static final String REQUEST_FAILED_TEMP_VALUE_INVALID = "sorry, i could not fullfill the request due to invalid temperature value.";
 }
