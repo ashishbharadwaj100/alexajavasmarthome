@@ -90,7 +90,7 @@ public class HandlerSpeechlet implements SpeechletV2 {
 			logger.info("session attributes={}", session.getAttributes());
 			
 			// Create the initial greeting speech.
-			String speechText = "Hello " + user.getGiven_name() +". " + AlexaUtils.SamplesHelpText;
+			String speechText = "Hello " + user.getGiven_name() +". " + AlexaUtils.userLoginText;
 			
 			Card card = AlexaUtils.newCard("Welcome!", speechText);
 			PlainTextOutputSpeech speech = AlexaUtils.newSpeech(speechText, false);
@@ -167,7 +167,7 @@ public class HandlerSpeechlet implements SpeechletV2 {
 		// Start a conversation (if not started already) and say that we did not understand the intent
 		AlexaUtils.setConversationMode(session, true);
 		
-		String errorText = "I don't know what that means. " + AlexaUtils.SamplesHelpText;
+		String errorText = "I don't know what that means. " + "Say help for some suggestions.";
 		
 		Card card = AlexaUtils.newCard("Dazed and Confused", errorText);
 		PlainTextOutputSpeech speech = AlexaUtils.newSpeech(errorText, false);
