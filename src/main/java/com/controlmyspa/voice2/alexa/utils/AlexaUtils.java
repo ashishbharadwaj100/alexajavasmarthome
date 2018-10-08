@@ -19,7 +19,15 @@ public final class AlexaUtils {
 	public static final String SamplesHelpText = "Here are some things you can say: Turn lights on or off, what is the set temperature, what is the actual temperature, what is the heater status, set temperature to.";
 	public static final String RepromptText = "What else can I tell you?  Say \"Help\" for some suggestions.";
 	public static final String userLoginText = "\"Welcome to control my spa. How can i help you?  Say \"Help\" for some suggestions.";
-	
+	public static final String gatewayNotConnectedText = "Welcome to control my spa. Your spa is not currently connected to the ControlMySpa cloud. "
+															+ "Please ensure your spa is connected to the internet before you can use Alexa to control your spa.";
+	public static final String whatCanIDoText = "You can ask me things to help you control your Spa."
+			+ "For example, you can ask what is the current water temperature by saying Tell my spa, What is the temperature?"
+			+ " Or you can set the desired water temperature by saying ‘Tell my spa, set temperature to XX.’"
+			+ " Or you can ask if the heater is On by saying, ‘Tell my spa, is my heater on?’ or"
+			+ " you can ask if the lights are On or Off by saying, "
+			+ " Tell my spa, are my lights On? and finally you can turn your lights On or Off by saying "
+			+ "Tell my spa, turn my lights On.";
 	private AlexaUtils() {
 	}
 	

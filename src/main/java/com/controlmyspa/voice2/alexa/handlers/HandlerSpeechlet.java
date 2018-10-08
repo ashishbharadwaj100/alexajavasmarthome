@@ -85,6 +85,11 @@ public class HandlerSpeechlet implements SpeechletV2 {
 			session.setAttribute("spaid", spa.get_id());
 			session.setAttribute("user", user.getUser_name());
 			
+			if(!isSpaConnectedToGateway(spa)) {
+				String speechText = "Hello " + user.getGiven_name() +". " + AlexaUtils.gatewayNotConnectedText;
+				return sendMessage(speechText, session);
+			}
+			
 			//print the session attributes
 			logger.info("sessionid={}", session.getSessionId());
 			logger.info("session attributes={}", session.getAttributes());
@@ -188,5 +193,13 @@ public class HandlerSpeechlet implements SpeechletV2 {
 		logger.info("Permissions={}", requestEnvelope.getSession().getUser().getPermissions());
 	}
 
+	private boolean isSpaConnectedToGateway(Spa spa) {
+		return spa.getCurrentState().isOnline();
+	}
 
+	private SpeechletResponse sendMessage(String message, Session session) {
+		Card card = AlexaUtils.newCard("ControlMySpa", message);
+		PlainTextOutputSpeech speech = AlexaUtils.newSpeech(message, AlexaUtils.inConversationMode(session));
+		return AlexaUtils.newSpeechletResponse( card, speech, session, false);
+	}
 }
